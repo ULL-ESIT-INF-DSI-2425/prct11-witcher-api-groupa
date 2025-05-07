@@ -1,12 +1,12 @@
+// import { app } from "./app.js"
 import express from 'express';
 import './db/mongoose.js';
 import { Cazador } from './models/cazador.js';
 import { Mercader } from './models/mercader.js';
 import { Bien } from './models/bien.js';
 import { Transaccion } from './models/transaccion.js';
-// import { Transaccion } from './models/transaccion.js';
 
-const app = express();
+export const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
