@@ -39,7 +39,7 @@ const TransaccionSchema = new Schema<TransaccionInterface>({
     },
 });
 
-// Para establecer importe automáticamente al guardar el documento, debes usar un middleware pre('save'), que es la forma adecuada en Mongoose para lógica derivada.
+// Para establecer importe automáticamente al guardar el documento, debemos usar un middleware pre('save'), que es la forma adecuada en Mongoose para lógica derivada.
 TransaccionSchema.pre('save', async function (next) {
   try {
     const transaccion = this as HydratedDocument<TransaccionInterface>; // especifica a mongoose que el documento Mongoose sigue la interfaz

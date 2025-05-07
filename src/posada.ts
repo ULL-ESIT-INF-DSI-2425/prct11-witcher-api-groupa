@@ -3,6 +3,7 @@ import './db/mongoose.js';
 import { Cazador } from './models/cazador.js';
 import { Mercader } from './models/mercader.js';
 import { Bien } from './models/bien.js';
+import { Transaccion } from './models/transaccion.js';
 // import { Transaccion } from './models/transaccion.js';
 
 const app = express();
@@ -65,7 +66,15 @@ app.delete('/cazadores', async (req, res) => {
       res.status(404).send({error: 'No se han encontrado cazadores'});
     }
     else {
-      const cazadorEliminado = await Cazador.findByIdAndDelete(cazador[0]._id);
+      const id_cazador = cazador[0]._id;
+
+      await Transaccion.deleteMany({
+        cazadorMercader: id_cazador,
+        tipoParte: 'Cazador',
+      })
+
+      const cazadorEliminado = await Cazador.findByIdAndDelete(id_cazador);
+
       res.status(201).send(cazadorEliminado);
     }
   } catch (error) {
@@ -76,7 +85,15 @@ app.delete('/cazadores', async (req, res) => {
 // DELETE por id de mongoDB
 app.delete('/cazadores/:id', async (req, res) => {
   try {
-    const cazador = await Cazador.findByIdAndDelete(req.params.id);
+
+    const id_cazador = req.params.id;
+
+    await Transaccion.deleteMany({
+      cazadorMercader: id_cazador,
+      tipoParte: 'Cazador',
+    })
+
+    const cazador = await Cazador.findByIdAndDelete(id_cazador);
     if (cazador) {
       res.status(201).send(cazador);
     }
@@ -199,7 +216,14 @@ app.delete('/mercaderes', async (req, res) => {
       res.status(404).send({error: 'No se han encontrado mercaderes'});
     }
     else {
-      const mercaderEliminado = await Mercader.findByIdAndDelete(mercader[0]._id);
+      const id_mercader = mercader[0]._id;
+
+      await Transaccion.deleteMany({
+        cazadorMercader: id_mercader,
+        tipoParte: 'Mercader',
+      })
+
+      const mercaderEliminado = await Mercader.findByIdAndDelete(id_mercader);
       res.status(201).send(mercaderEliminado);
     }
   } catch (error) {
@@ -210,7 +234,15 @@ app.delete('/mercaderes', async (req, res) => {
 // DELETE por id de mongoDB
 app.delete('/mercaderes/:id', async (req, res) => {
   try {
-    const mercader = await Mercader.findByIdAndDelete(req.params.id);
+    const id_mercader = req.params.id;
+
+    await Transaccion.deleteMany({
+      cazadorMercader: id_mercader,
+      tipoParte: 'Mercader',
+    })
+
+    const mercader = await Mercader.findByIdAndDelete(id_mercader);
+    
     if (mercader) {
       res.status(201).send(mercader);
     }
