@@ -33,7 +33,7 @@ describe("POST /cazadores, 401", () => {
         raza: "Dragón",
         ubicacion: "Novigrado"
       })
-      .expect(401);
+      .expect(400);
   });
 });
 
@@ -271,7 +271,6 @@ describe("PATCH /cazadores?query, 404", () => {
     await request(app)
       .patch("/cazadores?nombre=Fran")
       .send({
-        id: 1,
         nombre: "Daniel",
         raza: "Humano",
         ubicacion: "Novigrado"
@@ -333,7 +332,7 @@ describe("PATCH /cazadores?query, 200", () => {
   });
 });
 
-describe("PATCH /cazadores?query, 200", () => {
+describe("PATCH /cazadores?query, 401", () => {
   test("Debería prohibir la actualización de cazadores.", async () => {
     await request(app)
       .post("/cazadores")
@@ -354,7 +353,7 @@ describe("PATCH /cazadores?query, 200", () => {
         raza: "Humano",
         ubicacion: "Novigrado"
       })
-      .expect(200);
+      .expect(401);
   });
 });
 

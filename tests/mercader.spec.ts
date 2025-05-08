@@ -33,7 +33,7 @@ describe("POST /mercaderes, 401", () => {
         tipo: "Especialista en escudos",
         ubicacion: "Novigrado"
       })
-      .expect(401);
+      .expect(400);
   });
 });
 
@@ -136,7 +136,7 @@ describe("DELETE /mercaderes/:id, 404", () => {
 describe("DELETE /mercaderes/:id, 200", () => {
   test("Debería eliminar correctamente mercader.", async () => {
     await request(app)
-      .post("/mercaderes?nombre=Daniel")
+      .post("/mercaderes")
       .send({
         id: 1,
         nombre: "Daniel",
@@ -197,10 +197,8 @@ describe("DELETE /mercaderes?query, 200", () => {
         ubicacion: "Novigrado"
       })
       .expect(201);
-    const mercader = await Mercader.findOne({ nombre: "Daniel" });
-    const id = mercader._id;
     await request(app)
-      .delete(`/mercaderes/${id}`)
+      .delete(`/mercaderes?nombre=Daniel`)
       .expect(200);
   });
 });
@@ -284,7 +282,7 @@ describe("PATCH /mercaderes?query, 404", () => {
 describe("PATCH /mercaderes?query, 403", () => {
   test("No debería actualizar, puesto que hay varios mercaderes de mismo nombre.", async () => {
     await request(app)
-      .post("/mercaderes?nombre=Daniel")
+      .post("/mercaderes")
       .send({
         id: 1,
         nombre: "Daniel",
@@ -293,7 +291,7 @@ describe("PATCH /mercaderes?query, 403", () => {
       })
       .expect(201);
     await request(app)
-      .post("/mercaderes?nombre=Daniel")
+      .post("/mercaderes")
       .send({
         id: 2,
         nombre: "Daniel",
@@ -315,7 +313,7 @@ describe("PATCH /mercaderes?query, 403", () => {
 describe("PATCH /mercaderes?query, 200", () => {
   test("Debería actualizar correctamente mercaderes.", async () => {
     await request(app)
-      .post("/mercaderes?nombre=Daniel")
+      .post("/mercaderes")
       .send({
         id: 1,
         nombre: "Daniel",
@@ -323,10 +321,8 @@ describe("PATCH /mercaderes?query, 200", () => {
         ubicacion: "Novigrado"
       })
       .expect(201);
-    const mercader = await Mercader.findOne({ nombre: "Daniel" });
-    const id = mercader._id;
     await request(app)
-      .patch(`/mercaderes/${id}`)
+      .patch(`/mercaderes?nombre=Daniel`)
       .send({
         nombre: "Fran",
         tipo: "Herrero",
@@ -336,7 +332,7 @@ describe("PATCH /mercaderes?query, 200", () => {
   });
 });
 
-describe("PATCH /mercaderes?query, 200", () => {
+describe("PATCH /mercaderes?query, 401", () => {
   test("Debería prohibir la actualizacion del mercader.", async () => {
     await request(app)
       .post("/mercaderes")

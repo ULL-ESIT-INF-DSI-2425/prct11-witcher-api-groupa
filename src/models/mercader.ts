@@ -1,12 +1,16 @@
 import { Document, Schema, model } from 'mongoose';
-
+/**
+ * Interfaz de las características principales de un mercader en la base de datos
+ */
 export interface MercaderInterface extends Document {
     id: number,
     nombre: string,
     tipo: 'Herrero' | 'Alquimista' | 'Mercader general' | 'Otro',
     ubicacion: 'Novigrado' | 'Velen' | 'Kaer Trolde' | 'Skellige' | 'Otro'
 }
-    
+/**
+ * Schema con la disposición de los datos de un mercader en la base
+ */
 const MercaderSchema = new Schema<MercaderInterface>({
     id: {
         type: Number,

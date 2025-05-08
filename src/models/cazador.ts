@@ -1,12 +1,16 @@
 import { Document, Schema, model } from 'mongoose';
-
+/**
+ * Interfaz con la estructura que puede tener un Cazador en nuestra base de datos
+ */
 export interface CazadorInterface extends Document {
     id: number,
     nombre: string,
     raza: 'Humano' | 'Elfo' | 'Enano' | 'Hechizero',
     ubicacion: 'Novigrado' | 'Velen' | 'Kaer Trolde' | 'Skellige' | 'Otro'
 }
-
+/**
+ * Schema específico de la información de los Cazadores en la base de datos
+ */
 const CazadorSchema = new Schema<CazadorInterface>({
     id: {
         type: Number,

@@ -2,7 +2,9 @@ import mongoose, { Document, Schema, model, HydratedDocument } from 'mongoose';
 import { Cazador, CazadorInterface } from './cazador.js';
 import { Mercader, MercaderInterface } from './mercader.js';
 import { Bien, BienInterface } from './bien.js';
-
+/**
+ * Interfaz principal de las partes que componen una Transacción
+ */
 interface TransaccionInterface extends Document {
     tipoParte: 'Cazador' | 'Mercader';
     cazadorMercader: CazadorInterface | MercaderInterface; // Referencia al cazador o mercader
@@ -10,7 +12,9 @@ interface TransaccionInterface extends Document {
     fechaHora: Date; // Fecha y hora de la transacción
     importe: number; // Importe asociado, calculado automáticamente
 }
-
+/**
+ * Schema de la disposición de datos, dentro de la base de datos, de una Transacción
+ */
 const TransaccionSchema = new Schema<TransaccionInterface>({
     tipoParte: {
         type: String,
@@ -19,7 +23,7 @@ const TransaccionSchema = new Schema<TransaccionInterface>({
     },
     cazadorMercader: {
         type: Schema.Types.ObjectId,
-        refPath: 'tipoParte', // creo q con esto vale
+        refPath: 'tipoParte', 
         required: true,
     },
     bienes: [
@@ -35,11 +39,13 @@ const TransaccionSchema = new Schema<TransaccionInterface>({
     },
     importe: {
         type: Number,
-        required: true, // no se puede usar validate porque mongoose solo comprueba el valor, no puede modificarlo en el schema
+        required: true,
     },
 });
 
-// Para establecer importe automáticamente al guardar el documento, debemos usar un middleware pre('save'), que es la forma adecuada en Mongoose para lógica derivada.
+/**
+ * Middleware diseñado para el cálculo del importe de una transacción de forma dinámica
+ */
 TransaccionSchema.pre('save', async function (next) {
   try {
     const transaccion = this as HydratedDocument<TransaccionInterface>; // especifica a mongoose que el documento Mongoose sigue la interfaz
@@ -47,12 +53,11 @@ TransaccionSchema.pre('save', async function (next) {
     let total = 0;
   
     for (const item of transaccion.bienes) {
-    // Cargamos el bien desde la base de datos
       const bienDoc = await mongoose.model('Bien').findById(item.bien);
       if (!bienDoc) {
         return next(new Error(`Bien con id ${item.bien} no encontrado`));
       }
-      const precio = (bienDoc as any).precio; // usa casting si tu modelo no tiene tipado
+      const precio = (bienDoc as any).precio; 
       total += precio * item.cantidad;
     }
     transaccion.importe = total;

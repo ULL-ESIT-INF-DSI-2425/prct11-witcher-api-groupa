@@ -1,5 +1,7 @@
 import { Document, Schema, model } from 'mongoose';
-
+/**
+ * Interfaz con los componentes que definen a un Bien
+ */
 export interface BienInterface extends Document {
     id: number,
     nombre: string,
@@ -8,7 +10,9 @@ export interface BienInterface extends Document {
     peso: number,
     valor: number
 }
-
+/**
+ * Schema de como se dispondrá la información del bien en la base de datos
+ */
 const BienSchema = new Schema<BienInterface>({
     id: {
         type: Number,
@@ -47,7 +51,12 @@ const BienSchema = new Schema<BienInterface>({
         unique: false,
         required: true,
         trim: true,
-    }
+        validate: {
+            validator: (value: number) => {
+                return value > 0;
+            }
+        }
+    },
 });
 
 export const Bien = model<BienInterface>('Bien', BienSchema);
