@@ -1,6 +1,6 @@
 import { describe, test, beforeEach } from "vitest";
 import request from "supertest";
-import { app } from "../src/posada.js";
+import { app } from "../src/app.js";
 import { Mercader } from "../src/models/mercader.js";
 
 // Borrar la base de datos antes de cada prueba
@@ -116,7 +116,6 @@ describe("GET /mercaderes/:id, 200", () => {
         ubicacion: "Novigrado"
       })
       .expect(201);
-    // Guardar el id de mongodb del mercader creado
     const mercader = await Mercader.findOne({ nombre: "Daniel" });
     const id = mercader._id;
     await request(app)

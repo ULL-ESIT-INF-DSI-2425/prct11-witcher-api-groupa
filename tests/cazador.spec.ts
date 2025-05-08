@@ -16,7 +16,7 @@ describe("POST /cazadores, 201", () => {
       .send({
         id: 1,
         nombre: "Fran",
-        tipo: "Cazador de monstruos",
+        raza: "Humano",
         ubicacion: "Novigrado"
       })
       .expect(201);
@@ -30,7 +30,7 @@ describe("POST /cazadores, 401", () => {
       .send({
         id: 1,
         nombre: "Fran",
-        tipo: "Cazador de monstruos",
+        raza: "Humano",
         ubicacion: "Novigrado"
       })
       .expect(401);
@@ -53,7 +53,7 @@ describe("GET /cazadores, 200", () => {
       .send({
         id: 1,
         nombre: "Daniel",
-        tipo: "Cazador de monstruos",
+        raza: "Humano",
         ubicacion: "Novigrado"
       })
       .expect(201);
@@ -78,7 +78,7 @@ describe("GET /cazadores?query, 200", () => {
       .send({
         id: 1,
         nombre: "Daniel",
-        tipo: "Cazador de monstruos",
+        raza: "Humano",
         ubicacion: "Novigrado"
       })
       .expect(201);
@@ -103,7 +103,7 @@ describe("GET /cazadores/:id, 200", () => {
       .send({
         id: 1,
         nombre: "Daniel",
-        tipo: "Cazador de monstruos",
+        raza: "Humano",
         ubicacion: "Novigrado"
       })
       .expect(201);
@@ -114,3 +114,28 @@ describe("GET /cazadores/:id, 200", () => {
 });
 
 //// TESTS DE DELETE ////
+describe("DELETE /cazadores/:id, 404", () => {
+  test("No debería eliminar, puesto que no hay cazadores.", async () => {
+    await request(app)
+      .delete("/cazadores/1")
+      .expect(404);
+  });
+});
+
+describe("DELETE /cazadores/:id, 200", () => {
+  test("Debería eliminar correctamente cazadores.", async () => {
+    await request(app)
+      .post("/cazadores")
+      .send({
+        id: 1,
+        nombre: "Daniel",
+        raza: "Humano",
+        ubicacion: "Novigrado"
+      })
+      .expect(201);
+    await request(app)
+      .delete("/cazadores/1")
+      .expect(200);
+  });
+});
+
