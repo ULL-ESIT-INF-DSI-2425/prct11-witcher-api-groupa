@@ -8,7 +8,8 @@
     "doc": "npx typedoc --entryPointStrategy Expand src",
     "dev": "tsc-watch --onSuccess \"env-cmd -f ./config/dev.env node dist/posada.js\"",
     "test": "env-cmd -f ./config/test.env vitest run index",
-    "coverage": "env-cmd -f ./config/test.env vitest run index --coverage --coverage.include **/src/*"
+    "coverage": "env-cmd -f ./config/test.env vitest run index --coverage --coverage.include **/src/*",
+    "prettier": "prettier --write ."
   },
   "type": "module",
   "keywords": [],

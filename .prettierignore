@@ -11,3 +11,5 @@ package.json
 README.md
 tsconfig.json
 typedoc.json
+mongodb
+mongodb-data
